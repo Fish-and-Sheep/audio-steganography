@@ -86,10 +86,7 @@ def search_do_extract(attacked_path, watermak, decoder, len_file):
                 best_len_list.append(decoder_acc.item())
                 break
             
-            # if verify:
-            #     logging.info(verify)
-            #     logging.info(f"{i_len}:{decoder_acc}")
-            # len_file.write(str(i_len)+ ':\t' + str(decoder_acc) + "\n")
+          
             best_len_list.append(decoder_acc.item())
     best_len = best_len_list.index(max(best_len_list)) + start_len
     
