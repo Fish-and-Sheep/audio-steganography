@@ -107,11 +107,9 @@ def do_encode(spectrum_path, encoder, cover, sr, watermark, out_path, dc, device
         encoder_mse = mse_loss(cover_aud_tensor, aud_tensor.clamp(-1,1), reduction='sum')
         snr = 10 * torch.log10(cover_mse / encoder_mse)
 
-        # cover_audio_for_mel = cover_aud_tensor.cpu().squeeze(0).squeeze(0).detach().numpy()
+       
         encoded_audio_for_mel = aud_tensor.cpu().squeeze(0).squeeze(0).detach().numpy()
-        # stft_specgram(cover_audio_for_mel, 'Cover', picname=spectrum_path+'cover_audio_mel')
-        # stft_specgram(encoded_audio_for_mel, 'Encoded', picname=spectrum_path+'encoded_audio_mel')
-        # residual_stft_specgram(cover_audio_for_mel, encoded_audio_for_mel, 'Residual', picname=spectrum_path+"residual_audio_mel")
+       
         
         soundfile.write(out_path, encoded_audio_for_mel, samplerate=sr)
         print(f"encode finished! encoder_mse:{encoder_mse} And snr:{snr}")
@@ -123,13 +121,6 @@ def do_attack(generated_audio, sr, attack_choice, dc, device):
     attacked_audio = attacked_data.cpu().squeeze(0).squeeze(0).detach().numpy()
     soundfile.write('results/test_result/attacked_audio.wav', attacked_audio, samplerate=sr)
     carrier_reconst_tag, _ = dwt_transform(attacked_data)
-
-    # with open('results/test_result/attacked_audio.wav', 'rb') as f:
-    #     attacked2, sr = torchaudio.load(f.name)
-    # attacked2 = attacked2[0][:NUMBER_SAMPLE][None][None].to(device)
-    # carrier_reconst_tag2, _ = dwt_transform(attacked2)
-    # import pdb
-    # pdb.set_trace()
     return carrier_reconst_tag
 
 
